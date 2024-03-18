@@ -25,7 +25,8 @@ def cooking_session_table(num_rows):
     data['Uniq_id'] = data.apply(lambda row: generate_unique_ids(row), axis=1)
     
     #check validity of cooking session
-    data['Validity'] = data.apply(lambda row: is_session_valid(row), axis=1)
+    # data['Validity'] = data.apply(lambda row: is_session_valid(row), axis=1)
+    data['Validity'] =  data.index % 2 == 0
     
     return data
 
@@ -37,6 +38,7 @@ def is_session_valid(row):
     #convert timestamp into datetime
     # received_on_datetime = datetime.fromtimestamp(row['Received_on'])
     start_time_datetime = datetime.fromtimestamp(row['Start_time'])
+    
     return(row['Received_on'] - start_time_datetime).days <=3
 
 
@@ -45,7 +47,7 @@ def save_into_excel(data, filename):
     data.to_excel(filename, index=False)
 
    
-save_into_excel(cooking_session_table(100),"Generated cooking sessions.xlsx")
+save_into_excel(cooking_session_table(110),"Generated cooking sessions data.xlsx")
 
 
 
